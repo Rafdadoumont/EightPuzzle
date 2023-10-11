@@ -29,11 +29,9 @@ public class AStarAlgorithmStrategy extends AlgorithmTemplate implements Algorit
         Node root = new Node(board, x, y, x, y, 0, null);
         root.setCost(getHeuristic(root));
         priorityQueue.add(root);
-        int iteration = 0;
 
         while (!priorityQueue.isEmpty()) {
             Node minNode = priorityQueue.poll();
-            System.out.println("Iteration: " + ++iteration);
             if (minNode.getCost() == 0) {
                 printBacktrackPath(minNode);
                 return;

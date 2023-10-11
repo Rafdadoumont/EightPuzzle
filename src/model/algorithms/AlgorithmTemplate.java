@@ -46,14 +46,14 @@ public abstract class AlgorithmTemplate {
     public final int getHeuristic(Node node) {
         int manhattanDistanceSum = 0;
 
-        for (int y = 0; y < dimension; y++) {
-            for (int x = 0; x < dimension; x++) {
+        for (int x = 0; x < dimension; x++) {
+            for (int y = 0; y < dimension; y++) {
                 int value = node.getBoard()[x][y];
                 if (value != 0) {
-                    int targetX = (value - 1) / dimension;
-                    int targetY = (value - 1) % dimension;
-                    int dx = x - targetX;
-                    int dy = y - targetY;
+                    int targetX = value % dimension;
+                    int targetY = value / dimension;
+                    int dx = y - targetX;
+                    int dy = x - targetY;
                     manhattanDistanceSum += Math.abs(dx) + Math.abs(dy);
                 }
             }

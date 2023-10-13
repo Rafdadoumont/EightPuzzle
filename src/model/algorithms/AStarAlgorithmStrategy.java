@@ -2,7 +2,6 @@ package model.algorithms;
 
 import model.Node;
 
-import java.time.Instant;
 import java.util.*;
 
 /**
@@ -18,7 +17,7 @@ public class AStarAlgorithmStrategy extends AlgorithmTemplate implements Algorit
     @Override
     public void solve(int[][] board) {
         super.dimension = board.length;
-        PriorityQueue<Node> priorityQueue = new PriorityQueue<Node>(1000, Comparator.comparingInt(a -> (a.getCost() + a.getLevel())));
+        PriorityQueue<Node> priorityQueue = new PriorityQueue<Node>(1000, Comparator.comparingInt(a -> (a.getCost() + a.getDepth())));
 
         int[] coordinates = getCoordinates(board);
         assert coordinates != null;
@@ -29,7 +28,7 @@ public class AStarAlgorithmStrategy extends AlgorithmTemplate implements Algorit
         root.setCost(getHeuristic(root));
         priorityQueue.add(root);
         int iteration = 0;
-        long startMs = System.currentTimeMillis();
+        long ms = System.currentTimeMillis();
         HashSet<Node> closedSet = new HashSet<>();
 
         while (!priorityQueue.isEmpty()) {
@@ -37,7 +36,8 @@ public class AStarAlgorithmStrategy extends AlgorithmTemplate implements Algorit
             Node minNode = priorityQueue.poll();
             if (minNode.getCost() == 0) {
                 printBacktrackPath(minNode);
-                System.out.println( System.currentTimeMillis() - startMs + " ms");
+                ms = (System.currentTimeMillis() - ms);
+                printResults(minNode, ms, iteration);
                 return;
             }
 

@@ -4,6 +4,7 @@ import model.Node;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * An abstract class representing a template for various algorithms to solve puzzles.
@@ -90,7 +91,7 @@ public abstract class AlgorithmTemplate {
             int newY = y + move[1];
 
             if (isValidMove(newX, newY)) {
-                Node successorNode = new Node(node.getBoard(), x, y, newX, newY, node.getLevel() + 1, node);
+                Node successorNode = new Node(node.getBoard(), x, y, newX, newY, node.getDepth() + 1, node);
                 successorNode.setCost(getHeuristic(successorNode));
                 successors.add(successorNode);
             }
@@ -99,14 +100,34 @@ public abstract class AlgorithmTemplate {
     }
 
     /**
-     * Recursively prints the path from the root node to a given node.
+     * Prints the path from the start (root) to goal node
      *
      * @param root The root node of the path.
      */
     public final void printBacktrackPath(Node root) {
-        if (root == null) return;
+        Stack<Node> nodeStack = new Stack<>();
 
-        System.out.println(root);
-        printBacktrackPath(root.getParent());
+        while (root != null) {
+            nodeStack.add(root);
+            root = root.getParent();
+        }
+
+        while (!nodeStack.empty()) {
+            System.out.println(nodeStack.pop());
+        }
+    }
+
+    public final void printResults(Node node, long time, int iterations) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        printBacktrackPath(node);
+
+        stringBuilder.append("/***********/\n")
+                .append("Depth: " + node.getDepth() + "\n")
+                .append("Time: " + time + " ms" + "\n")
+                .append("Iterations: " + iterations + "\n")
+                .append("/***********/\n");
+
+        System.out.println(stringBuilder);
     }
 }

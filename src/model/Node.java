@@ -11,7 +11,7 @@ public class Node {
     private final int[][] board;
     private final int x;
     private final int y;
-    private final int level;
+    private final int depth;
     private int cost;
 
     /**
@@ -22,10 +22,10 @@ public class Node {
      * @param y      The Y-coordinate of the empty space (0).
      * @param newX   The new X-coordinate of the empty space after the move.
      * @param newY   The new Y-coordinate of the empty space after the move.
-     * @param level  The level or depth of the node in the search tree.
+     * @param depth  The depth of the node in the search tree.
      * @param parent The parent node of the current node.
      */
-    public Node(int[][] board, int x, int y, int newX, int newY, int level, Node parent) {
+    public Node(int[][] board, int x, int y, int newX, int newY, int depth, Node parent) {
         this.parent = parent;
         this.board = new int[board.length][];
         for (int i = 0; i < board.length; i++) {
@@ -38,7 +38,7 @@ public class Node {
         this.board[newY][newX] = temp;
 
         this.cost = Integer.MAX_VALUE;
-        this.level = level;
+        this.depth = depth;
         this.x = newX;
         this.y = newY;
     }
@@ -80,12 +80,12 @@ public class Node {
     }
 
     /**
-     * Gets the level or depth of this node in the search tree.
+     * Gets the depth or depth of this node in the search tree.
      *
-     * @return The level of the node.
+     * @return The depth of the node.
      */
-    public int getLevel() {
-        return level;
+    public int getDepth() {
+        return depth;
     }
 
     /**
@@ -107,7 +107,7 @@ public class Node {
     }
 
     /**
-     * Returns a string representation of the node, including the board state, level, and cost.
+     * Returns a string representation of the node, including the board state, depth, and cost.
      *
      * @return A string representation of the node.
      */
@@ -120,14 +120,14 @@ public class Node {
             }
             stringBuilder.append('\n');
         }
-        stringBuilder.append("Level: ").append(level).append('\n');
+        stringBuilder.append("Depth: ").append(depth).append('\n');
         stringBuilder.append("Cost: ").append(cost).append('\n');
         return stringBuilder.toString();
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(parent, x, y, level, cost);
+        int result = Objects.hash(parent, x, y, depth, cost);
         result = 31 * result + Arrays.deepHashCode(board);
         return result;
     }

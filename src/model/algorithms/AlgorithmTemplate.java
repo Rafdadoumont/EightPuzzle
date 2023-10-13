@@ -50,10 +50,21 @@ public abstract class AlgorithmTemplate {
             for (int y = 0; y < dimension; y++) {
                 int value = node.getBoard()[x][y];
                 if (value != 0) {
-                    int targetX = value % dimension;
-                    int targetY = value / dimension;
-                    int dx = y - targetX;
-                    int dy = x - targetY;
+                    // 1 2 3
+                    // 4 5 6
+                    // 7 8 0
+                    int targetX = (value - 1) / dimension;
+                    int targetY = (value - 1) % dimension;
+                    int dx = x - targetX;
+                    int dy = y - targetY;
+
+                    // 0 1 2
+                    // 3 4 5
+                    // 6 7 8
+//                    int targetX = value % dimension;
+//                    int targetY = value / dimension;
+//                    int dx = y - targetX;
+//                    int dy = x - targetY;
                     manhattanDistanceSum += Math.abs(dx) + Math.abs(dy);
                 }
             }

@@ -1,5 +1,8 @@
 package model;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 /**
  * Represents a node in a puzzle-solving algorithm.
  */
@@ -120,5 +123,32 @@ public class Node {
         stringBuilder.append("Level: ").append(level).append('\n');
         stringBuilder.append("Cost: ").append(cost).append('\n');
         return stringBuilder.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(parent, x, y, level, cost);
+        result = 31 * result + Arrays.deepHashCode(board);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof Node other)) {
+            return false;
+        }
+
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board.length; j++) {
+                if (this.board[i][j] != other.getBoard()[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

@@ -2,9 +2,8 @@ package model.algorithms;
 
 import model.Node;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.time.Instant;
+import java.util.*;
 
 /**
  * An implementation of the A* algorithm for solving puzzles.
@@ -29,18 +28,34 @@ public class AStarAlgorithmStrategy extends AlgorithmTemplate implements Algorit
         Node root = new Node(board, x, y, x, y, 0, null);
         root.setCost(getHeuristic(root));
         priorityQueue.add(root);
+        int iteration = 0;
+        long startMs = System.currentTimeMillis();
+        HashSet<Node> closedSet = new HashSet<>();
 
         while (!priorityQueue.isEmpty()) {
+            System.out.println(++iteration);
             Node minNode = priorityQueue.poll();
             if (minNode.getCost() == 0) {
                 printBacktrackPath(minNode);
+                System.out.println( System.currentTimeMillis() - startMs + " ms");
                 return;
             }
 
+            closedSet.add(minNode);
+
             List<Node> successors = getSuccessors(minNode);
-            for (Node node: successors) {
-                node.setCost(getHeuristic(node));
-                priorityQueue.add(node);
+
+            for (Node node : successors) {
+                boolean isExplored = false;
+                for (Node closedSetNode : closedSet) {
+                    if (node.equals(closedSetNode)) {
+                        isExplored = true;
+                    }
+                }
+                if (!isExplored) {
+                    node.setCost(getHeuristic(node));
+                    priorityQueue.add(node);
+                }
             }
         }
     }

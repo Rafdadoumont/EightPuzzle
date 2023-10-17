@@ -1,6 +1,7 @@
 package application;
 
 import model.BoardGenerator;
+import model.Node;
 import model.Puzzle;
 import model.algorithms.AlgorithmEnum;
 import model.algorithms.AlgorithmFactory;
@@ -10,7 +11,7 @@ public class EightPuzzleMain {
     public static void main(String[] args) {
         Puzzle puzzle = new Puzzle();
         BoardGenerator boardGenerator = new BoardGenerator();
-        int[][] board = boardGenerator.generate(14);
+        int[][] board = boardGenerator.generate(20);
 
         if (puzzle.isSolvable(board)) {
             AlgorithmFactory factory = new AlgorithmFactory();

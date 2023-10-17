@@ -137,16 +137,13 @@ public class Node {
         if (o == this) {
             return true;
         }
-
         if (!(o instanceof Node other)) {
             return false;
         }
 
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board.length; j++) {
-                if (this.board[i][j] != other.getBoard()[i][j]) {
-                    return false;
-                }
+        for (int i = 0; i < this.board.length; i++) {
+            if (!Arrays.equals(this.board[i], other.getBoard()[i])) {
+                return false;
             }
         }
         return true;

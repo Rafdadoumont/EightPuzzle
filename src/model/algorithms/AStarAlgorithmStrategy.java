@@ -32,29 +32,24 @@ public class AStarAlgorithmStrategy extends AlgorithmTemplate implements Algorit
         HashSet<Node> closedSet = new HashSet<>();
 
         while (!priorityQueue.isEmpty()) {
-            System.out.println(++iteration);
             Node minNode = priorityQueue.poll();
-            if (minNode.getCost() == 0) {
-                printBacktrackPath(minNode);
+            ++iteration;
+            if (minNode != null && minNode.getCost() == 0) {
                 ms = (System.currentTimeMillis() - ms);
                 printResults(minNode, ms, iteration);
                 return;
             }
 
             closedSet.add(minNode);
-
+            assert minNode != null;
             List<Node> successors = getSuccessors(minNode);
 
             for (Node node : successors) {
-                boolean isExplored = false;
-                for (Node closedSetNode : closedSet) {
-                    if (node.equals(closedSetNode)) {
-                        isExplored = true;
-                    }
-                }
-                if (!isExplored) {
+                if (!closedSet.contains(node)) {
                     node.setCost(getHeuristic(node));
-                    priorityQueue.add(node);
+                    if (!priorityQueue.contains(node)) {
+                        priorityQueue.add(node);
+                    }
                 }
             }
         }

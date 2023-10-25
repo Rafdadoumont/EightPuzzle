@@ -29,10 +29,10 @@ public abstract class AlgorithmTemplate {
      * @param board The puzzle board represented as a 2D array.
      * @return An array containing the X and Y coordinates of the value.
      */
-    public final int[] getCoordinates(int[][] board) {
-        for(int y = 0; y < dimension; y++)
+    public final int[] getCoordinates(byte[][] board) {
+        for(int y = 0; y < dimension;y++)
             for(int x = 0; x < dimension; x++)
-                if (board[x][y] == 0) {
+                if (board[y][x] == 0) {
                     return new int[]{x, y};
                 }
         return null;

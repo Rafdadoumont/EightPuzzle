@@ -8,7 +8,7 @@ import java.util.Objects;
  */
 public class Node {
     private final Node parent;
-    private final int[][] board;
+    private final byte[][] board;
     private final int x;
     private final int y;
     private final int depth;
@@ -25,15 +25,15 @@ public class Node {
      * @param depth  The depth of the node in the search tree.
      * @param parent The parent node of the current node.
      */
-    public Node(int[][] board, int x, int y, int newX, int newY, int depth, Node parent) {
+    public Node(byte[][] board, int x, int y, int newX, int newY, int depth, Node parent) {
         this.parent = parent;
-        this.board = new int[board.length][];
+        this.board = new byte[board.length][];
         for (int i = 0; i < board.length; i++) {
             this.board[i] = board[i].clone();
         }
 
         // Swap values
-        int temp = this.board[y][x];
+        byte temp = this.board[y][x];
         this.board[y][x] = this.board[newY][newX];
         this.board[newY][newX] = temp;
 
@@ -57,7 +57,7 @@ public class Node {
      *
      * @return The puzzle board as a 2D array.
      */
-    public int[][] getBoard() {
+    public byte[][] getBoard() {
         return board;
     }
 
@@ -114,7 +114,7 @@ public class Node {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        for (int[] row : board) {
+        for (byte[] row : board) {
             for (int tile : row) {
                 stringBuilder.append(tile).append(" ");
             }
@@ -141,11 +141,6 @@ public class Node {
             return false;
         }
 
-        for (int i = 0; i < this.board.length; i++) {
-            if (!Arrays.equals(this.board[i], other.getBoard()[i])) {
-                return false;
-            }
-        }
-        return true;
+        return Arrays.deepEquals(this.board, other.getBoard());
     }
 }

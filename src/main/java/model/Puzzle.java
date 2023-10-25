@@ -12,7 +12,7 @@ public class Puzzle {
      * @return true if the puzzle is solvable, false otherwise.
      *
      */
-    public boolean isSolvable(int[][] board) {
+    public boolean isSolvable(byte[][] board) {
         int[] boardFlatten = new int[(int) Math.pow(dimension, 2)];
         int i = 0;
 

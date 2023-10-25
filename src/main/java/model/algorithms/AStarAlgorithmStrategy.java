@@ -2,7 +2,9 @@ package model.algorithms;
 
 import model.Node;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.PriorityQueue;
 
 /**
  * An implementation of the A* algorithm for solving puzzles.
@@ -15,9 +17,11 @@ public class AStarAlgorithmStrategy extends AlgorithmTemplate implements Algorit
      * @param board The initial puzzle board to solve.
      */
     @Override
-    public void solve(int[][] board) {
+    public void solve(byte[][] board) {
         super.dimension = board.length;
-        PriorityQueue<Node> priorityQueue = new PriorityQueue<Node>(1000, Comparator.comparingInt(a -> (a.getCost() + a.getDepth())));
+        AStarComparator aStarComparator = new AStarComparator();
+        PriorityQueue<Node> openSetQueue = new PriorityQueue<>(aStarComparator);
+        HashSet<Node> closedSet = new HashSet<>();
 
         int[] coordinates = getCoordinates(board);
         assert coordinates != null;
@@ -26,13 +30,12 @@ public class AStarAlgorithmStrategy extends AlgorithmTemplate implements Algorit
 
         Node root = new Node(board, x, y, x, y, 0, null);
         root.setCost(getHeuristic(root));
-        priorityQueue.add(root);
+        openSetQueue.add(root);
         int iteration = 0;
         long ms = System.currentTimeMillis();
-        HashSet<Node> closedSet = new HashSet<>();
 
-        while (!priorityQueue.isEmpty()) {
-            Node minNode = priorityQueue.poll();
+        while (!openSetQueue.isEmpty()) {
+            Node minNode = openSetQueue.poll();
             ++iteration;
             if (minNode != null && minNode.getCost() == 0) {
                 ms = (System.currentTimeMillis() - ms);
@@ -41,15 +44,13 @@ public class AStarAlgorithmStrategy extends AlgorithmTemplate implements Algorit
             }
 
             closedSet.add(minNode);
-            assert minNode != null;
+
             List<Node> successors = getSuccessors(minNode);
 
             for (Node node : successors) {
-                if (!closedSet.contains(node)) {
+                if (!closedSet.contains(node) && !openSetQueue.contains(node)) {
                     node.setCost(getHeuristic(node));
-                    if (!priorityQueue.contains(node)) {
-                        priorityQueue.add(node);
-                    }
+                    openSetQueue.add(node);
                 }
             }
         }
